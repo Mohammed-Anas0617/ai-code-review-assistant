@@ -47,3 +47,23 @@ Update `src/main/resources/application.properties`:
 ### Next (Day 2)
 PostgreSQL integration + Spring Security authentication — `User` entity, repository, JWT filter,
 `/api/auth/register` and `/api/auth/login` endpoints.
+
+## Day 2 — PostgreSQL Integration & Spring Security
+
+- Connected Spring Boot to PostgreSQL using Spring Data JPA
+- Created `User` entity and `UserRepository`
+- Implemented BCrypt password hashing
+- Set up Spring Security with stateless JWT authentication (JJWT 0.12.6)
+- Built `/api/auth/register` and `/api/auth/login` endpoints
+- Tested both endpoints in Postman — returned 200 OK with valid JWT tokens
+
+## Day 3 — Frontend Dashboard & Routing
+
+- Scaffolded React frontend using Vite (JavaScript)
+- Set up Tailwind CSS for styling
+- Installed and configured React Router for page navigation
+- Built Login page — connects to backend, stores JWT, redirects to dashboard
+- Built Register page — connects to backend, redirects to login on success
+- Added `ProtectedRoute` component to guard `/dashboard` from unauthenticated access
+- Built basic Dashboard layout with navbar and logout functionality
+- Fixed CORS issue by adding `CorsConfig.java` to allow requests from `http://localhost:5173`
