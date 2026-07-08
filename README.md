@@ -67,3 +67,31 @@ PostgreSQL integration + Spring Security authentication — `User` entity, repos
 - Added `ProtectedRoute` component to guard `/dashboard` from unauthenticated access
 - Built basic Dashboard layout with navbar and logout functionality
 - Fixed CORS issue by adding `CorsConfig.java` to allow requests from `http://localhost:5173`
+
+## Day 4: File Upload APIs
+- Implemented file upload endpoint using Spring `MultipartFile`
+- Accepts single Java source file uploads via `multipart/form-data`
+- Saves uploaded file temporarily to disk for processing
+- Tested successfully in Postman with `.java` file uploads
+
+## Day 5: Checkstyle Integration
+- Added Checkstyle 10.20.2 as a library dependency (not Maven plugin) for runtime analysis of uploaded files
+- Created `checkstyle-rules.xml` with rules covering naming conventions, unused imports, whitespace, and code size limits
+- Built `CheckstyleService` to load rules and run analysis programmatically using Checkstyle's `Checker` API
+- Built `POST /api/analysis/checkstyle` endpoint to accept a file upload and return violations as JSON
+- Configured Spring Security to permit `/api/analysis/**` for testing
+- Verified with Postman: uploading a file with intentional errors correctly returns violations (naming, unused imports, whitespace issues)
+
+**Sample response:**
+```json
+{
+  "fileName": "test.java",
+  "violationCount": 5,
+  "violations": [
+    "Line 1: Using the '.*' form of import should be avoided - java.util.*.",
+    "Line 3: Name 'test' must match pattern '^[A-Z][a-zA-Z0-9]*$'.",
+    "Line 4: Name 'DoSomething' must match pattern '^[a-z][a-zA-Z0-9]*$'.",
+    "Line 5: '=' is not followed by whitespace.",
+    "Line 5: '=' is not preceded with whitespace."
+  ]
+}
