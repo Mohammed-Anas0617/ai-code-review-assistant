@@ -95,3 +95,17 @@ PostgreSQL integration + Spring Security authentication — `User` entity, repos
     "Line 5: '=' is not preceded with whitespace."
   ]
 }
+
+## Day 6 - PMD and SpotBugs Integration
+
+- Integrated PMD 7.3.0 as a static analysis tool
+  - Added `PmdService` running rule sets: best practices, code style, design, error-prone, performance, security
+  - Created `POST /api/pmd/test` endpoint (test-only, permitted in SecurityConfig)
+  - Verified against sample code with unused variables, empty catch blocks, and generic exception handling
+- Integrated SpotBugs 4.8.6 as a bytecode-level bug detector
+  - Added `SpotBugsService` using `FindBugs2`, `BugCollectionBugReporter`, and `Project`
+  - Resolved Java 17 module system compatibility by pointing to `jrt-fs.jar` instead of the legacy `rt.jar`
+  - Fixed `IllegalStateException: Priority threshold not set` by explicitly setting `Priorities.LOW_PRIORITY`
+  - Created `GET /api/spotbugs/test` endpoint (test-only, permitted in SecurityConfig)
+  - Verified against a compiled class with a guaranteed null pointer dereference (correctly flagged as `NP_ALWAYS_NULL`, High priority)
+- Key learning: SpotBugs requires compiled `.class` files, not `.java` source — compilation must precede analysis
