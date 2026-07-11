@@ -109,3 +109,12 @@ PostgreSQL integration + Spring Security authentication — `User` entity, repos
   - Created `GET /api/spotbugs/test` endpoint (test-only, permitted in SecurityConfig)
   - Verified against a compiled class with a guaranteed null pointer dereference (correctly flagged as `NP_ALWAYS_NULL`, High priority)
 - Key learning: SpotBugs requires compiled `.class` files, not `.java` source — compilation must precede analysis
+
+## Day 7: Unified Analysis Report Endpoint
+
+- Created `AnalysisReportDto` to combine results from Checkstyle, PMD, and SpotBugs into a single response
+- Created `AnalysisReportService`, which calls all three analysis services and merges their outputs
+- Created `AnalysisReportController` with `GET /api/analysis/full` endpoint, accepting `javaFilePath` and `classFilePath` query params
+- Endpoint already covered under `/api/analysis/**` permitAll rule in `SecurityConfig`
+- Tested successfully in Postman — returns combined JSON with `checkstyleViolations`, `pmdViolations`, and `spotbugsViolations`
+- Pushed to GitHub
