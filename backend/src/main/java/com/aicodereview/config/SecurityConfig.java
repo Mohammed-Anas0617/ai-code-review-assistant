@@ -29,6 +29,7 @@ public class SecurityConfig {
                         .requestMatchers("/api/pmd/**").permitAll()
                         .requestMatchers("/api/analysis/**").permitAll()
                         .requestMatchers("/api/spotbugs/**").permitAll()
+                        .requestMatchers("/api/ai/**").permitAll()
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);

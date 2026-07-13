@@ -118,3 +118,9 @@ PostgreSQL integration + Spring Security authentication — `User` entity, repos
 - Endpoint already covered under `/api/analysis/**` permitAll rule in `SecurityConfig`
 - Tested successfully in Postman — returns combined JSON with `checkstyleViolations`, `pmdViolations`, and `spotbugsViolations`
 - Pushed to GitHub
+
+Day 8: Integrated Gemini API for AI-powered code review.
+- Created OpenAiConfig and OpenAiService with WebClient calls to Gemini's generateContent endpoint
+- POST /api/ai/review endpoint built and secured
+- Verified model availability via Gemini's /models endpoint
+- Endpoint correctly reaches Gemini's servers; live response testing pending due to temporary 503 (Service Unavailable) from Gemini's free-tier API
