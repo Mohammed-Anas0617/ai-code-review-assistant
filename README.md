@@ -124,3 +124,10 @@ Day 8: Integrated Gemini API for AI-powered code review.
 - POST /api/ai/review endpoint built and secured
 - Verified model availability via Gemini's /models endpoint
 - Endpoint correctly reaches Gemini's servers; live response testing pending due to temporary 503 (Service Unavailable) from Gemini's free-tier API
+
+### Day 9: Persist Analysis Results to Database
+- Created `Review` and `ReviewFinding` entities to store static analysis results
+- Added `ReviewRepository` and `ReviewFindingRepository` for database access
+- Built `ReviewService` with `createReview()` and `addFinding()` methods
+- Updated `/api/analysis/full` endpoint to accept a `projectId` parameter and automatically save Checkstyle, PMD, and SpotBugs results as a `Review` with linked `ReviewFinding` records
+- Verified persistence end-to-end via Postman + pgAdmin: analysis results now stored in `reviews` and `review_findings` tables instead of only being returned in the API response
