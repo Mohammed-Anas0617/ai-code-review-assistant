@@ -7,6 +7,7 @@ import com.aicodereview.repository.ReviewRepository;
 import com.aicodereview.repository.ReviewFindingRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import java.util.List;
 
 @Service
 public class ReviewService {
@@ -37,5 +38,13 @@ public class ReviewService {
         finding.setFileName(fileName);
         finding.setLineNumber(lineNumber);
         return reviewFindingRepository.save(finding);
+    }
+
+    public List<Review> getReviewsByProject(Long projectId) {
+        return reviewRepository.findByProjectId(projectId);
+    }
+
+    public List<ReviewFinding> getFindingsByReview(Long reviewId) {
+        return reviewFindingRepository.findByReviewId(reviewId);
     }
 }

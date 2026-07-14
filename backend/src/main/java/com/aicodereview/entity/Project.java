@@ -1,10 +1,13 @@
 package com.aicodereview.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity
 @Table(name = "projects")
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Project {
 
     @Id

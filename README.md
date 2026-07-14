@@ -131,3 +131,12 @@ Day 8: Integrated Gemini API for AI-powered code review.
 - Built `ReviewService` with `createReview()` and `addFinding()` methods
 - Updated `/api/analysis/full` endpoint to accept a `projectId` parameter and automatically save Checkstyle, PMD, and SpotBugs results as a `Review` with linked `ReviewFinding` records
 - Verified persistence end-to-end via Postman + pgAdmin: analysis results now stored in `reviews` and `review_findings` tables instead of only being returned in the API response
+
+## Day 10 – Review & Review Finding Retrieval Endpoints
+
+- Added `GET /api/reviews/project/{projectId}` to fetch all reviews for a given project.
+- Added `GET /api/reviews/{reviewId}/findings` to fetch all findings linked to a specific review.
+- Secured both endpoints under Spring Security (`/api/reviews/**` requires authentication).
+- Fixed a Jackson serialization error caused by lazily-loaded Hibernate proxies (`Project` → `User`) by adding `@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})` to the `Review` and `Project` entities.
+- Added `@JsonIgnore` to the `User` entity's `password` field to prevent password hashes from leaking through any nested API response.
+- Verified both endpoints in Postman with a valid JWT, confirming correct JSON structure and no sensitive data exposure.
