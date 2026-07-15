@@ -140,3 +140,9 @@ Day 8: Integrated Gemini API for AI-powered code review.
 - Fixed a Jackson serialization error caused by lazily-loaded Hibernate proxies (`Project` → `User`) by adding `@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})` to the `Review` and `Project` entities.
 - Added `@JsonIgnore` to the `User` entity's `password` field to prevent password hashes from leaking through any nested API response.
 - Verified both endpoints in Postman with a valid JWT, confirming correct JSON structure and no sensitive data exposure.
+
+### Day 11: Review History and Search
+- Added `GET /api/reviews/history` endpoint to fetch a user's past reviews, sorted by newest first
+- Added `GET /api/reviews/search?keyword=...` endpoint to search reviews by project name or summary
+- Used a custom JPQL `@Query` in `ReviewRepository` to match keyword across both fields, scoped to the logged-in user
+- Tested both endpoints in Postman with JWT authentication

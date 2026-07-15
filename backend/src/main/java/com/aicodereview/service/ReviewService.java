@@ -5,6 +5,8 @@ import com.aicodereview.entity.Review;
 import com.aicodereview.entity.ReviewFinding;
 import com.aicodereview.repository.ReviewRepository;
 import com.aicodereview.repository.ReviewFindingRepository;
+import com.aicodereview.repository.UserRepository;
+import com.aicodereview.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.List;
@@ -17,6 +19,9 @@ public class ReviewService {
 
     @Autowired
     private ReviewFindingRepository reviewFindingRepository;
+
+    @Autowired
+    private UserRepository userRepository;
 
     public Review createReview(Project project, Integer score, String summary) {
         Review review = new Review();
@@ -46,5 +51,17 @@ public class ReviewService {
 
     public List<ReviewFinding> getFindingsByReview(Long reviewId) {
         return reviewFindingRepository.findByReviewId(reviewId);
+    }
+
+    public List<Review> getReviewHistory(String email) {
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+        return reviewRepository.findByProject_User_IdOrderByCreatedAtDesc(user.getId());
+    }
+
+    public List<Review> searchReviewHistory(String email, String keyword) {
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+        return reviewRepository.searchReviews(user.getId(), keyword);
     }
 }
