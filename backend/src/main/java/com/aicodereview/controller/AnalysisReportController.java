@@ -36,7 +36,12 @@ public class AnalysisReportController {
         Project project = projectRepository.findById(projectId)
                 .orElseThrow(() -> new RuntimeException("Project not found with id: " + projectId));
 
-        Review review = reviewService.createReview(project, null, "Static analysis report for " + report.getFileName());
+        int score = 100;
+        score -= report.getCheckstyleViolations().size() * 2;
+        score -= report.getPmdViolations().size() * 3;
+        score -= report.getSpotbugsViolations().size() * 5;
+        score = Math.max(score, 0);
+        Review review = reviewService.createReview(project, score, "Static analysis report for " + report.getFileName());
 
         for (String violation : report.getCheckstyleViolations()) {
             reviewService.addFinding(review, "CHECKSTYLE", violation, null, null, report.getFileName(), null);

@@ -146,3 +146,28 @@ Day 8: Integrated Gemini API for AI-powered code review.
 - Added `GET /api/reviews/search?keyword=...` endpoint to search reviews by project name or summary
 - Used a custom JPQL `@Query` in `ReviewRepository` to match keyword across both fields, scoped to the logged-in user
 - Tested both endpoints in Postman with JWT authentication
+
+Day 12: Testing and debugging - fixed auth gap and review scoring
+
+- Ran full end-to-end test pass (register, login, upload, analysis, AI review)
+- Secured /api/analysis/full (was missing auth requirement)
+- Verified /api/pmd, /api/spotbugs, /api/ai endpoints are intentionally open for dev testing
+- Fixed review_score always saving as null; added scoring algorithm
+  (Checkstyle -2, PMD -3, SpotBugs -5 per violation, floor at 0)
+- Confirmed /api/reviews/search working correctly (user-scoped by design)
+
+Performed a full end-to-end test pass across all major endpoints:
+
+- **Auth flow**: register, login, wrong-password rejection (403)
+- **File upload**: verified JWT-secured upload works correctly
+- **Static analysis**: `/api/analysis/full` tested with Checkstyle, PMD, SpotBugs
+- **AI review**: `/api/ai/review` tested against Gemini API, confirmed structured JSON output
+- **Review search**: verified `/api/reviews/search` correctly scopes results per authenticated user
+
+### Bugs found and fixed
+- **Security gap**: `/api/analysis/full` had no authentication requirement — fixed by updating `SecurityConfig.java` to require `authenticated()` instead of `permitAll()`
+- **Review scoring bug**: `review_score` was always saved as `null` because `AnalysisReportController` passed a hardcoded `null` instead of a calculated score. Added a scoring algorithm: starts at 100, deducts 2 points per Checkstyle violation, 3 per PMD violation, 5 per SpotBugs violation, floored at 0.
+
+### Known items for later (before deployment)
+- `/api/pmd/test`, `/api/spotbugs/test`, and `/api/ai/review` are currently `permitAll()` in `SecurityConfig.java`, left open intentionally for development testing. These need to be secured or removed before Day 14 deployment.
+- `/api/ai/review` does not currently persist results to the database — only the static analysis path (`/api/analysis/full`) saves reviews. Consider unifying this in a future iteration.
