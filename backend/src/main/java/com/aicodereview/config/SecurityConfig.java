@@ -3,6 +3,7 @@ package com.aicodereview.config;
 import com.aicodereview.security.JwtAuthFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -25,11 +26,12 @@ public class SecurityConfig {
                 .sessionManagement(session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
+                        .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                         .requestMatchers("/api/auth/**", "/api/health").permitAll()
-                        .requestMatchers("/api/pmd/**").permitAll()
+                        .requestMatchers("/api/pmd/**").authenticated()
                         .requestMatchers("/api/analysis/**").authenticated()
-                        .requestMatchers("/api/spotbugs/**").permitAll()
-                        .requestMatchers("/api/ai/**").permitAll()
+                        .requestMatchers("/api/spotbugs/**").authenticated()
+                        .requestMatchers("/api/ai/**").authenticated()
                         .requestMatchers("/api/reviews/**").authenticated()
                         .anyRequest().authenticated()
                 )

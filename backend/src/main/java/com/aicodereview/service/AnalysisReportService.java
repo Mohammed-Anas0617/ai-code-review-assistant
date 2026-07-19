@@ -38,8 +38,12 @@ public class AnalysisReportService {
 
         // SpotBugs
         List<String> spotbugsResults = new ArrayList<>();
-        for (SpotBugsService.SpotBugsIssue issue : spotBugsService.analyze(classFilePath)) {
-            spotbugsResults.add(issue.type() + " (Line " + issue.line() + "): " + issue.message());
+        try {
+            for (SpotBugsService.SpotBugsIssue issue : spotBugsService.analyze(classFilePath)) {
+                spotbugsResults.add(issue.type() + " (Line " + issue.line() + "): " + issue.message());
+            }
+        } catch (Exception e) {
+            spotbugsResults.add("SpotBugs analysis unavailable: no compiled .class file found");
         }
         report.setSpotbugsViolations(spotbugsResults);
 

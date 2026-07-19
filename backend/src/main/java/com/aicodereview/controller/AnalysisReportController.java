@@ -26,15 +26,16 @@ public class AnalysisReportController {
 
     @GetMapping("/full")
     public AnalysisReportDto getFullReport(
-            @RequestParam String javaFilePath,
-            @RequestParam String classFilePath,
             @RequestParam Long projectId) throws Exception {
-
-        File javaFile = new File(javaFilePath);
-        AnalysisReportDto report = analysisReportService.generateReport(javaFile, javaFilePath, classFilePath);
 
         Project project = projectRepository.findById(projectId)
                 .orElseThrow(() -> new RuntimeException("Project not found with id: " + projectId));
+
+        String javaFilePath = project.getFilePath();
+        String classFilePath = javaFilePath; // TODO: revisit once SpotBugs needs a real .class path
+
+        File javaFile = new File(javaFilePath);
+        AnalysisReportDto report = analysisReportService.generateReport(javaFile, javaFilePath, classFilePath);
 
         int score = 100;
         score -= report.getCheckstyleViolations().size() * 2;

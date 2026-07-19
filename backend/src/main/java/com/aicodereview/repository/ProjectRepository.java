@@ -1,10 +1,12 @@
 package com.aicodereview.repository;
 
 import com.aicodereview.entity.Project;
+import com.aicodereview.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
 
 public interface ProjectRepository extends JpaRepository<Project, Long> {
     List<Project> findByUserId(Long userId);
+    List<Project> findByUser(User user);
 }
