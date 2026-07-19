@@ -171,3 +171,9 @@ Performed a full end-to-end test pass across all major endpoints:
 ### Known items for later (before deployment)
 - `/api/pmd/test`, `/api/spotbugs/test`, and `/api/ai/review` are currently `permitAll()` in `SecurityConfig.java`, left open intentionally for development testing. These need to be secured or removed before Day 14 deployment.
 - `/api/ai/review` does not currently persist results to the database — only the static analysis path (`/api/analysis/full`) saves reviews. Consider unifying this in a future iteration.
+
+## Day 13 - UI Overhaul & Feature Additions
+- Redesigned Dashboard and Analysis Report with a dark, IDE-inspired theme
+- Added project list, delete project, re-run analysis, and loading states
+- Fixed a data-integrity bug: project deletion now cascades to reviews/findings
+- Fixed missing filePath persistence from Day 4 that blocked analysis reports
